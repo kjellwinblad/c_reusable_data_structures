@@ -11,26 +11,26 @@ endif
 
 ifdef ADD_SAN
 	CC = clang
-	EXTRA_C_FLAGS = -std=c99 -Wall -pedantic -g -O00 -fsanitize-blacklist=.misc/clang_blacklist.txt -fsanitize=address -fno-omit-frame-pointer
+	EXTRA_C_FLAGS = -std=c99 -Wall -pedantic -g -O00 -fsanitize=address -fno-omit-frame-pointer
 	USE_GC_STRING = -use_gc
 endif
 
 ifdef MEM_SAN
 	CC = clang
-	EXTRA_C_FLAGS = -std=c99 -Wall -pedantic -g -O00 -fsanitize-blacklist=.misc/clang_blacklist.txt -fsanitize=memory -fno-omit-frame-pointer
+	EXTRA_C_FLAGS = -std=c99 -Wall -pedantic -g -O00 -fsanitize=memory -fno-omit-frame-pointer
 endif
 
 ifdef UB_SAN
 	CC = clang
-	EXTRA_C_FLAGS = -std=c99 -Wall -pedantic -g -O00 -fsanitize-blacklist=.misc/clang_blacklist.txt -fsanitize=undefined -fno-omit-frame-pointer
+	EXTRA_C_FLAGS = -std=c99 -Wall -pedantic -g -O00 -fsanitize=undefined -fno-omit-frame-pointer
 endif
 
-CFLAGS = -I$(IDIR) $(EXTRA_C_FLAGS)
+CFLAGS =  -g -O01 -I$(IDIR) $(EXTRA_C_FLAGS)
 
 ODIR = .
 LDIR =
 
-_DEPS = stack.h test_framework.h
+DEPS = dynarr.h test_framework.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
 _OBJ = test.o
@@ -44,7 +44,14 @@ test.bin: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS)
 
 
-.PHONY: clean test run_test_continusly CMakeLists.txt cmake_compile clang_format test_add_san test_ub_san test_mem_san test_sanitizers test_modern_cc test_valgrind
+.PHONY: clean test run_test_continusly CMakeLists.txt cmake_compile clang_format test_add_san test_ub_san test_mem_san test_sanitizers test_modern_cc test_valgrind test_macro_expanded.bin
+
+test_macro_expanded.bin:
+	gcc -E -C -P test.c > tmp_tmp_test.c
+	clang-format tmp_tmp_test.c > tmp_test.c
+	rm tmp_tmp_test.c
+	gcc -g -O01 tmp_test.c
+	valgrind --leak-check=full ./a.out
 
 test: test.bin
 	./test.bin ;\

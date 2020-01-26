@@ -58,3 +58,5 @@ GRTAGS
 GTAGS
 TAGS
 test.bin
+
+tmp_test.c
