@@ -4,7 +4,12 @@
 #include <assert.h>
 #define DS_SUPPRESS_WARNING(a) (void)a
 
-#define _DECLARE_DYNARR_DS(DYNARR_TYPE, DYNARR_NAME, MODIFIER, MALLOC_FUN_NAME, FREE_FUN_NAME, DEFAULT_CAPACITY) \
+#define _DECLARE_DYNARR_DS(DYNARR_TYPE,\
+                           DYNARR_NAME,\
+                           MODIFIER,\
+                           MALLOC_FUN_NAME,\
+                           FREE_FUN_NAME,\
+                           DEFAULT_CAPACITY)                            \
   typedef struct {                                                      \
     int size;                                                           \
     int capacity;                                                       \
@@ -190,12 +195,12 @@
                                                                         \
   MODIFIER DYNARR_NAME* DYNARR_NAME ## _insert_at(DYNARR_NAME* s,       \
                                                   int index,            \
-                                          DYNARR_TYPE item){            \
+                                                  DYNARR_TYPE item){    \
     DYNARR_NAME ## _push_void(s, 1);                                    \
     int size = DYNARR_NAME ## _size(s);                                 \
     DYNARR_TYPE * a =                                                   \
       DYNARR_NAME ## _current_raw_array(s);                             \
-    for(int i = size -1; i > index; i--){                            \
+    for(int i = size -1; i > index; i--){                               \
       a[i] = a[i -1];                                                   \
     }                                                                   \
     a[index] = item;                                                    \
@@ -219,8 +224,8 @@
   }                                                                     \
                                                                         \
   MODIFIER DYNARR_NAME* DYNARR_NAME ## _insert_after(DYNARR_NAME* s,    \
-                                             DYNARR_TYPE after_item,    \
-                                             DYNARR_TYPE item){         \
+                                                  DYNARR_TYPE after_item, \
+                                                  DYNARR_TYPE item){    \
     int index = DYNARR_NAME ## _index_of(s, after_item);                \
     if(index != -1) {                                                   \
       DYNARR_NAME ## _insert_at(s, index + 1, item);                    \
