@@ -54,8 +54,15 @@
   }                                                                     \
                                                                         \
   MODIFIER DYNARR_NAME* DYNARR_NAME ## _new(){                          \
-    DYNARR_NAME* new_dynarr = MALLOC_FUN_NAME(sizeof(DYNARR_NAME));  \
+    DYNARR_NAME* new_dynarr = MALLOC_FUN_NAME(sizeof(DYNARR_NAME));     \
     DYNARR_NAME ## _init(new_dynarr);                                   \
+    return new_dynarr;                                                  \
+  }                                                                     \
+                                                                        \
+                                                                        \
+  MODIFIER DYNARR_NAME* DYNARR_NAME ## _new_with_capacity(int capacity){ \
+    DYNARR_NAME* new_dynarr = MALLOC_FUN_NAME(sizeof(DYNARR_NAME));     \
+    DYNARR_NAME ## _init_with_capacity(new_dynarr, capacity);           \
     return new_dynarr;                                                  \
   }                                                                     \
                                                                         \
