@@ -4,8 +4,12 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+static bool eq(int* i1, int* i2) {
+  return *i1 == *i2;
+}
 
-DECLARE_DYNARR_DS(int, /*static*/, malloc, free, 1)
+DECLARE_DYNARR_DS(int, /*static*/, malloc, free, eq, 1)
+
 
 static int test_dynarr_as_stack(){
   int_dynarr* s = int_dynarr_new();

@@ -60,3 +60,7 @@ TAGS
 test.bin
 
 tmp_test.c
+
+*.bin
+tags
+tmp_test_dynarr.c
