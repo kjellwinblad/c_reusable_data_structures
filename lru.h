@@ -8,8 +8,7 @@
 typedef struct LRUCACHE_NODE { \
   struct LRUCACHE_NODE* prev;  \
   struct LRUCACHE_NODE* next;  \
-  long value; \
-  bool is_dummy; \
+  LRUCACHE_TYPE value; \
 } LRUCACHE_NODE; \
  \
 typedef LRUCACHE_NODE* LRUCACHE_NODE_ptr;  \
@@ -64,8 +63,8 @@ MODIFIER void LRUCACHE_NAME ## _free(LRUCACHE_NAME * l) { \
     FREE_FUN_NAME(l); \
 } \
  \
-MODIFIER long * LRUCACHE_NAME ## _get(LRUCACHE_NAME* h, \
-                    long object) { \
+MODIFIER LRUCACHE_TYPE * LRUCACHE_NAME ## _get(LRUCACHE_NAME* h, \
+                    LRUCACHE_TYPE object) { \
    LRUCACHE_NODE lookup_node; \
    lookup_node.value = object; \
    LRUCACHE_NODE_ptr* existing_node = LRUCACHE_NODE_ptr_hash ## _get(&h->hashset, &lookup_node); \
@@ -80,7 +79,7 @@ MODIFIER long * LRUCACHE_NAME ## _get(LRUCACHE_NAME* h, \
  \
  \
 MODIFIER void LRUCACHE_NAME ## _add(LRUCACHE_NAME* h, \
-                  long object) { \
+                  LRUCACHE_TYPE object) { \
    LRUCACHE_NODE* node = (LRUCACHE_NODE*)MALLOC_FUN_NAME(sizeof(LRUCACHE_NODE)); \
    node->value = object; \
    DLLIST_ADD_AFTER(LRUCACHE_NODE, &h->dummy_first, node); \
