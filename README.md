@@ -23,7 +23,7 @@ See `test_harhbag.c` for how to use hash bags. The same data structure can be
 used for hash maps and hash sets with some creativity.
 
 
-### LRU Cache (`hashbag.h`)
+### LRU Cache (`lru.h`)
   
 See `test_lru.c` for how to use lru caches.
 
