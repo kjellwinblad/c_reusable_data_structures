@@ -18,7 +18,7 @@
                             HASH_FUN_NAME)                            \
   \
   \
-DECLARE_DYNARR_DS(HASHBAG_TYPE, MODIFIER, MALLOC_FUN_NAME, free, EQ_FUN_NAME, 1)  \
+DECLARE_DYNARR_DS(HASHBAG_TYPE, MODIFIER, MALLOC_FUN_NAME, FREE_FUN_NAME, EQ_FUN_NAME, 1)  \
   \
 bool HASHBAG_TYPE_dynarr_eq(HASHBAG_TYPE_dynarr* o1, HASHBAG_TYPE_dynarr* o2) {  \
     DS_SUPPRESS_WARNING(HASHBAG_TYPE_dynarr_eq);                       \
@@ -26,7 +26,7 @@ bool HASHBAG_TYPE_dynarr_eq(HASHBAG_TYPE_dynarr* o1, HASHBAG_TYPE_dynarr* o2) { 
     return false;  \
 } \
    \
-DECLARE_DYNARR_DS(HASHBAG_TYPE_dynarr, MODIFIER, MALLOC_FUN_NAME, free, HASHBAG_TYPE_dynarr_eq, HASHBAG_MINIMUM_NUMBER_OF_BUCKETS)  \
+DECLARE_DYNARR_DS(HASHBAG_TYPE_dynarr, MODIFIER, MALLOC_FUN_NAME, FREE_FUN_NAME, HASHBAG_TYPE_dynarr_eq, HASHBAG_MINIMUM_NUMBER_OF_BUCKETS)  \
   \
 typedef struct {  \
     size_t size;  \
@@ -65,7 +65,7 @@ MODIFIER void HASHBAG_NAME ## _destroy(HASHBAG_NAME* h) {  \
 MODIFIER void HASHBAG_NAME ## _free(HASHBAG_NAME* h) {  \
     DS_SUPPRESS_WARNING(HASHBAG_NAME ## _free);                       \
     HASHBAG_NAME ## _destroy(h);  \
-    free(h);  \
+    FREE_FUN_NAME(h);  \
 }  \
   \
 MODIFIER void ___ ## HASHBAG_NAME ## _adjust_number_of_buckets(HASHBAG_NAME* h,  \

@@ -63,7 +63,7 @@
   MODIFIER void DYNARR_NAME ## _free(DYNARR_NAME* dynarr){              \
     DS_SUPPRESS_WARNING(DYNARR_NAME ## _free);                       \
     DYNARR_NAME ## _destroy(dynarr);                                    \
-    free(dynarr);                                                       \
+    FREE_FUN_NAME(dynarr);                                                       \
   }                                                                     \
                                                                         \
   MODIFIER DYNARR_NAME* DYNARR_NAME ## _new(){                          \
@@ -95,7 +95,7 @@
         s->dynarr_array[i] = prev_array[i];                             \
       }                                                                 \
       if(s->capacity != DEFAULT_CAPACITY){                              \
-        free(prev_array);                                               \
+        FREE_FUN_NAME(prev_array);                                               \
       }                                                                 \
       s->capacity = new_capacity;                                       \
     }                                                                   \
