@@ -28,7 +28,7 @@ bool HASHBAG_TYPE_dynarr_eq(HASHBAG_TYPE_dynarr* o1, HASHBAG_TYPE_dynarr* o2) { 
    \
 DECLARE_DYNARR_DS(HASHBAG_TYPE_dynarr, MODIFIER, MALLOC_FUN_NAME, FREE_FUN_NAME, HASHBAG_TYPE_dynarr_eq, HASHBAG_MINIMUM_NUMBER_OF_BUCKETS)  \
   \
-typedef struct {  \
+typedef struct HASHBAG_NAME {  \
     size_t size;  \
     HASHBAG_TYPE_dynarr_dynarr buckets;  \
 } HASHBAG_NAME;  \

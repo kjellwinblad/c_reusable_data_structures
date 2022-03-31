@@ -24,7 +24,7 @@ MODIFIER bool LRUCACHE_NODE_ptr_hash_fun(LRUCACHE_NODE_ptr * object) { \
  \
 DECLARE_HASHBAG_DS(LRUCACHE_NODE_ptr, MODIFIER, MALLOC_FUN_NAME, FREE_FUN_NAME, LRUCACHE_NODE_ptr_eq, LRUCACHE_NODE_ptr_hash_fun) \
  \
-typedef struct { \
+typedef struct LRUCACHE_NAME { \
     LRUCACHE_NODE dummy_first; \
     LRUCACHE_NODE dummy_last; \
     LRUCACHE_NODE_ptr_hash hashset; \

@@ -13,7 +13,7 @@
                            FREE_FUN_NAME,\
                            EQ_FUN_NAME,\
                            DEFAULT_CAPACITY)                            \
-  typedef struct {                                                      \
+  typedef struct DYNARR_NAME {                                                      \
     int size;                                                           \
     int capacity;                                                       \
     DYNARR_TYPE* dynarr_array;                                          \
