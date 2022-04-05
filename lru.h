@@ -3,7 +3,7 @@
 #include "list.h"
 
 
-#define _DECLARE_LRUCACHE_DS(LRUCACHE_TYPE, LRUCACHE_NAME, LRUCACHE_NODE, LRUCACHE_NODE_ptr, LRUCACHE_NODE_ptr_hash, LRUCACHE_NODE_ptr_eq, LRUCACHE_NODE_ptr_hash_fun, MODIFIER, MALLOC_FUN_NAME, FREE_FUN_NAME, EQ_FUN_NAME, HASH_FUN_NAME, DESTROY_FUN_NAME, EJECT_CONDITION_FUN_NAME) \
+#define _DECLARE_LRUCACHE_DS(LRUCACHE_TYPE, LRUCACHE_NAME, LRUCACHE_NODE, LRUCACHE_NODE_ptr, LRUCACHE_NODE_ptr_hash, LRUCACHE_NODE_ptr_eq, LRUCACHE_NODE_ptr_hash_fun, MODIFIER, MALLOC_FUN_NAME, FREE_FUN_NAME, EQ_FUN_NAME, HASH_FUN_NAME, DESTROY_FUN_NAME, EVICT_CONDITION_FUN_NAME) \
  \
 typedef struct LRUCACHE_NODE { \
   struct LRUCACHE_NODE* prev;  \
@@ -84,18 +84,37 @@ MODIFIER void LRUCACHE_NAME ## _add(LRUCACHE_NAME* h, \
    node->value = object; \
    DLLIST_ADD_AFTER(LRUCACHE_NODE, &h->dummy_first, node); \
    LRUCACHE_NODE_ptr_hash ## _put(&h->hashset, node); \
-   if (EJECT_CONDITION_FUN_NAME(h->hashset.size, &h->dummy_last.prev->value)) { \
+   if (EVICT_CONDITION_FUN_NAME(h->hashset.size, &h->dummy_last.prev->value)) { \
        LRUCACHE_NODE * node_to_remove = h->dummy_last.prev; \
        DLLIST_REMOVE(LRUCACHE_NODE, node_to_remove); \
        LRUCACHE_NODE_ptr_hash ## _remove(&h->hashset, node_to_remove); \
        DESTROY_FUN_NAME(&node_to_remove->value); \
        FREE_FUN_NAME(node_to_remove); \
    } \
+} \
+\
+MODIFIER size_t LRUCACHE_NAME ## _size(LRUCACHE_NAME* h) { \
+    return h->hashset.size; \
+} \
+ \
+MODIFIER int LRUCACHE_NAME ## _evict_if_condition_is_true(LRUCACHE_NAME* h) { \
+   if (LRUCACHE_NAME ## _size(h) == 0) { \
+       return 0; \
+   } \
+   if (EVICT_CONDITION_FUN_NAME(h->hashset.size, &h->dummy_last.prev->value)) { \
+       LRUCACHE_NODE * node_to_remove = h->dummy_last.prev; \
+       DLLIST_REMOVE(LRUCACHE_NODE, node_to_remove); \
+       LRUCACHE_NODE_ptr_hash ## _remove(&h->hashset, node_to_remove); \
+       DESTROY_FUN_NAME(&node_to_remove->value); \
+       FREE_FUN_NAME(node_to_remove); \
+       return 1; \
+   } \
+   return 0; \
 } 
- 
+
  
 
-#define DECLARE_LRUCACHE_DS(LRUCACHE_TYPE, MODIFIER, MALLOC_FUN_NAME, FREE_FUN_NAME, EQ_FUN_NAME, HASH_FUN_NAME, DESTROY_FUN_NAME, EJECT_CONDITION_FUN_NAME) \
-  _DECLARE_LRUCACHE_DS(LRUCACHE_TYPE, LRUCACHE_TYPE ## _lru, LRUCACHE_TYPE ## _lru_node, LRUCACHE_TYPE ## _lru_node_ptr, LRUCACHE_TYPE ## _lru_node_ptr_hash, LRUCACHE_TYPE ## _lru_node_ptr_eq, LRUCACHE_TYPE ## _lru_node_ptr_hash_fun, MODIFIER, MALLOC_FUN_NAME, FREE_FUN_NAME, EQ_FUN_NAME, HASH_FUN_NAME, DESTROY_FUN_NAME, EJECT_CONDITION_FUN_NAME)
+#define DECLARE_LRUCACHE_DS(LRUCACHE_TYPE, MODIFIER, MALLOC_FUN_NAME, FREE_FUN_NAME, EQ_FUN_NAME, HASH_FUN_NAME, DESTROY_FUN_NAME, EVICT_CONDITION_FUN_NAME) \
+  _DECLARE_LRUCACHE_DS(LRUCACHE_TYPE, LRUCACHE_TYPE ## _lru, LRUCACHE_TYPE ## _lru_node, LRUCACHE_TYPE ## _lru_node_ptr, LRUCACHE_TYPE ## _lru_node_ptr_hash, LRUCACHE_TYPE ## _lru_node_ptr_eq, LRUCACHE_TYPE ## _lru_node_ptr_hash_fun, MODIFIER, MALLOC_FUN_NAME, FREE_FUN_NAME, EQ_FUN_NAME, HASH_FUN_NAME, DESTROY_FUN_NAME, EVICT_CONDITION_FUN_NAME)
 
 
