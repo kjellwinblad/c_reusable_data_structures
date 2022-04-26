@@ -20,7 +20,7 @@
   \
 DECLARE_DYNARR_DS(HASHBAG_TYPE, MODIFIER, MALLOC_FUN_NAME, FREE_FUN_NAME, EQ_FUN_NAME, 1)  \
   \
-bool HASHBAG_TYPE_dynarr_eq(HASHBAG_TYPE_dynarr* o1, HASHBAG_TYPE_dynarr* o2) {  \
+MODIFIER bool HASHBAG_TYPE_dynarr_eq(HASHBAG_TYPE_dynarr* o1, HASHBAG_TYPE_dynarr* o2) {  \
     DS_SUPPRESS_WARNING(HASHBAG_TYPE_dynarr_eq);                       \
     assert(0 && "should never be used");  \
     return false;  \
