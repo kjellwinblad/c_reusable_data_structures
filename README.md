@@ -19,7 +19,7 @@ cases do not cover all available functions yet.
 
 ### Hash Bag (`hashbag.h`)
   
-See `test_harhbag.c` for how to use hash bags. The same data structure can be
+See `test_hashbag.c` for how to use hash bags. The same data structure can be
 used for hash maps and hash sets with some creativity.
 
 
